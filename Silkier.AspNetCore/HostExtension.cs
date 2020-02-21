@@ -10,11 +10,15 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Silkier.AspNetCore
 {
     public static class HostExtension
     {
+
+        public static T GetRequiredService<T>(this IServiceScopeFactory scopeFactor) =>
+                                  scopeFactor.CreateScope().ServiceProvider.GetRequiredService<T>();
 
         public static IHostBuilder ConfigureWindowsServices(this IHostBuilder hostBuilder)
         {
