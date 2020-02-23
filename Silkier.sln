@@ -7,7 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silkier", "Silkier\Silkier.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silkier.AspNetCore", "Silkier.AspNetCore\Silkier.AspNetCore.csproj", "{BBF50F2E-2466-446E-969C-8B63EBD95A55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silkier.HealthChecks.NTPServer", "Silkier.HealthChecks.NTPServer\Silkier.HealthChecks.NTPServer.csproj", "{74406C75-0465-4C92-967D-EC827B36B547}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silkier.HealthChecks.NTPServer", "Silkier.HealthChecks.NTPServer\Silkier.HealthChecks.NTPServer.csproj", "{74406C75-0465-4C92-967D-EC827B36B547}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6450D06C-913A-4070-BC7E-0D0C03D662DE}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
