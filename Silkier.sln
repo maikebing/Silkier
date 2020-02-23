@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silkier", "Silkier\Silkier.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silkier.AspNetCore", "Silkier.AspNetCore\Silkier.AspNetCore.csproj", "{BBF50F2E-2466-446E-969C-8B63EBD95A55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silkier.HealthChecks.NTPServer", "Silkier.HealthChecks.NTPServer\Silkier.HealthChecks.NTPServer.csproj", "{74406C75-0465-4C92-967D-EC827B36B547}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BBF50F2E-2466-446E-969C-8B63EBD95A55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBF50F2E-2466-446E-969C-8B63EBD95A55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBF50F2E-2466-446E-969C-8B63EBD95A55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74406C75-0465-4C92-967D-EC827B36B547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74406C75-0465-4C92-967D-EC827B36B547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74406C75-0465-4C92-967D-EC827B36B547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74406C75-0465-4C92-967D-EC827B36B547}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
