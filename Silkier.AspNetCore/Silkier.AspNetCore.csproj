@@ -6,10 +6,20 @@
     <Version>1.0.1</Version>
     <Product>Silkier</Product>
     <Authors>MaikeBing</Authors>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/maikebing/Silkier</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/maikebing/Silkier</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.1.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\docs\logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 </Project>
