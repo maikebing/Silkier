@@ -42,15 +42,21 @@ namespace Demos
 
         public BlogController(BloggingContext context) => _context = context;
 
-        public async Task ActionAsync() => await _context.Blogs.FirstAsync();
+        public async Task ActionAsync()
+        {
+            var x = await _context.Blogs.FirstAsync();
+            Console.WriteLine($" {x.Name} {_context.ContextId.InstanceId.ToString()} {Task.CurrentId}");
+        }
     }
 
     public class Startup
     {
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<BloggingContext>(c => c.UseInMemoryDatabase("test"));
+            var f = new Microsoft.Data.Sqlite.SqliteConnectionStringBuilder();
+            f.DataSource = "test.db";
+            services.AddDbContextPool<BloggingContext>(c => c.UseSqlite(f.ToString()));
             services.AddSingleton(b =>
             {
                 return new Blog() { BlogId = 1, Name = "Blog", Url = "http://www.cn.cn" };
@@ -89,27 +95,14 @@ namespace Demos
 
         private static void SetupDatabase(IServiceProvider serviceProvider)
         {
-            using (var serviceScope = serviceProvider.CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetService<BloggingContext>();
 
-                if (context.Database.EnsureCreated())
-                {
-                    context.Blogs.Add(new Blog { Name = "The Dog Blog", Url = "http://sample.com/dogs" });
-                    context.Blogs.Add(new Blog { Name = "The Cat Blog", Url = "http://sample.com/cats" });
-                    context.SaveChanges();
-                }
-            }
             int x = 0;
             List<int> list = Enumerable.Range(1, 1000).ToList();
-            ParallelPart.ForEach(list, 2, serviceProvider, (int i, Blog b, BlogX x, BloggingContext bc) =>
+            ParallelPart.ForEach(list, 10, serviceProvider, (int i, Blog b, BlogX x, BloggingContext bc) =>
            {
-               if (!bc.Blogs.Any(b => b.BlogId == i))
-               {
-                   bc.Blogs.Add(new Blog() {  Name= b.Name, Url= b.Url});
-                   Console.WriteLine($"{Thread.CurrentThread} {i}{b?.Name}{x?.Name}");
-                   bc.SaveChanges();
-               }
+               bc.Blogs.Add(new Blog() { Name = i.ToString(), Url = b.Url });
+               Console.WriteLine($"{Thread.CurrentThread} {i}{b?.Name}{x?.Name}");
+               bc.SaveChanges();
            });
         }
 
@@ -129,9 +122,9 @@ namespace Demos
                 {
                     Console.WriteLine(ex);
                 }
-          
+
             }
-           await  Task.CompletedTask;
+            await Task.CompletedTask;
         }
 
         private static async void MonitorResults(TimeSpan duration, Stopwatch stopwatch)
