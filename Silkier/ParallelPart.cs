@@ -36,19 +36,75 @@ namespace Silkier.Extensions
         }
 
 
-   
+   /// <summary>
+   /// 并行处理<paramref name="source"/>,在任务分区处理时，每一个区同时通过<paramref name="factory"/>获取一个<typeparamref name="T1"/>对象
+   /// </summary>
+   /// <typeparam name="T"></typeparam>
+   /// <typeparam name="T1">针对每个分区的注入对象</typeparam>
+   /// <param name="source"></param>
+   /// <param name="options"></param>
+   /// <param name="factory"></param>
+   /// <param name="action"></param>
+   /// <returns></returns>
         public static ParallelLoopResult ForEach<T, T1>(IEnumerable<T> source, ParallelOptions  options, IServiceProvider factory, Action<T, T1> action)
                                     => ForEach<T, Action<T, T1>>(source, options, factory, action);
-
+        /// <summary>
+        /// 并行处理<paramref name="source"/>,分为<paramref name="_maxDegreeOfParallelism"/>个区，每一个区同时通过<paramref name="factory"/>获取一个<typeparamref name="T1"/>对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="_maxDegreeOfParallelism"></param>
+        /// <param name="factory"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public static ParallelLoopResult ForEach<T, T1>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1> action)
                                  => ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action);
 
+        /// <summary>
+        /// 并行处理<paramref name="source"/>,分为<paramref name="_maxDegreeOfParallelism"/>个区，
+        /// 每一个区同时通过<paramref name="factory"/>获取<typeparamref name="T1"/>、<typeparamref name="T2"/>，并传递给<paramref name="action"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="_maxDegreeOfParallelism"></param>
+        /// <param name="factory"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public static ParallelLoopResult ForEach<T, T1, T2>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1, T2> action)
                                     => ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action);
-
+        /// <summary>
+        ///  并行处理<paramref name="source"/>,分为<paramref name="_maxDegreeOfParallelism"/>个区，
+        /// 每一个区同时通过<paramref name="factory"/>获取<typeparamref name="T1"/>、<typeparamref name="T2"/>、<typeparamref name="T3"/>，并传递给<paramref name="action"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="_maxDegreeOfParallelism"></param>
+        /// <param name="factory"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public static ParallelLoopResult ForEach<T, T1, T2,T3>(IEnumerable<T> source,int  _maxDegreeOfParallelism  , IServiceProvider factory, Action<T, T1, T2,T3> action)
                                     => ForEach(source,  new ParallelOptions() { MaxDegreeOfParallelism= _maxDegreeOfParallelism }, factory, action);
 
+        /// <summary>
+        ///  并行处理<paramref name="source"/>,分为<paramref name="_maxDegreeOfParallelism"/>个区，
+        /// 每一个区同时通过<paramref name="factory"/>获取<typeparamref name="T1"/>、<typeparamref name="T2"/>、<typeparamref name="T3"/>、<typeparamref name="T4"/>，并传递给<paramref name="action"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="T4"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="_maxDegreeOfParallelism"></param>
+        /// <param name="factory"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public static ParallelLoopResult ForEach<T, T1, T2,T3, T4>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1, T2, T3,T4> action)
                                => ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action);
 
@@ -60,17 +116,17 @@ namespace Silkier.Extensions
         public static ParallelLoopResult ForEach<T, T1, T2, T3, T4, T5,T6, T7>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1, T2, T3, T4, T5,T6, T7> action)
                => ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action);
 
-        private static ParallelLoopResult ForEach<T, T1,T2>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, Action<T, T1, T2> action, Action<T1, T2> _init_action, Action<T1, T2> _finish_action)
+        public static ParallelLoopResult ForEach<T, T1,T2>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, Action<T, T1, T2> action, Action<T1, T2> _init_action, Action<T1, T2> _finish_action)
         {
             return ForEach(source, parallelOptions, factory, action, _init_action, _finish_action);
         }
 
-        private static ParallelLoopResult ForEach<T, T1>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, Action<T,T1> action,Action<T1> _init_action, Action<T1> _finish_action)  
+        public static ParallelLoopResult ForEach<T, T1>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, Action<T,T1> action,Action<T1> _init_action, Action<T1> _finish_action)  
         {
             return ForEach(source, parallelOptions, factory, action, _init_action, _finish_action);
         }
 
-        private static ParallelLoopResult ForEach<T, A>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, A action) where A : Delegate
+        public static ParallelLoopResult ForEach<T, A>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, A action) where A : Delegate
         {
             return ForEach<T, A, A>(source, parallelOptions, factory, action, null, null);
         }
@@ -117,7 +173,13 @@ namespace Silkier.Extensions
         /// <returns></returns>
         public static ParallelLoopResult ForEach<T>(IEnumerable<T> source, int _maxDegreeOfParallelism, Action<T> action) =>
                                    ForEach(source, (source.Count() + _maxDegreeOfParallelism - 1) / _maxDegreeOfParallelism, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, action);
-
+        /// <summary>
+        /// 并行处理<paramref name="source"/>给<paramref name="action"/>处理
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public static ParallelLoopResult ForEach<T>(IEnumerable<T> source, Action<T> action)
         {
             ParallelOptions parallelOptions = new ParallelOptions();
