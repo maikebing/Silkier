@@ -60,8 +60,21 @@ namespace Silkier.Extensions
         public static ParallelLoopResult ForEach<T, T1, T2, T3, T4, T5,T6, T7>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1, T2, T3, T4, T5,T6, T7> action)
                => ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action);
 
+        private static ParallelLoopResult ForEach<T, T1,T2>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, Action<T, T1, T2> action, Action<T1, T2> _init_action, Action<T1, T2> _finish_action)
+        {
+            return ForEach(source, parallelOptions, factory, action, _init_action, _finish_action);
+        }
 
-        private static ParallelLoopResult ForEach<T, A>(IEnumerable<T> source,  ParallelOptions parallelOptions, IServiceProvider factory, A action) where A : Delegate
+        private static ParallelLoopResult ForEach<T, T1>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, Action<T,T1> action,Action<T1> _init_action, Action<T1> _finish_action)  
+        {
+            return ForEach(source, parallelOptions, factory, action, _init_action, _finish_action);
+        }
+
+        private static ParallelLoopResult ForEach<T, A>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, A action) where A : Delegate
+        {
+            return ForEach<T, A, A>(source, parallelOptions, factory, action, null, null);
+        }
+        private static ParallelLoopResult ForEach<T, A, B>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, A action, B _init_action, B _finish_action) where A : Delegate, B where B : Delegate
         {
             int rangeSize = (source.Count() + parallelOptions.MaxDegreeOfParallelism - 1) / parallelOptions.MaxDegreeOfParallelism;
             return Parallel.ForEach(Partitioner.Create(0, source.Count(), Math.Min(source.Count(), rangeSize)), parallelOptions ?? new ParallelOptions(), (range, loopState) =>
@@ -73,6 +86,7 @@ namespace Silkier.Extensions
                     {
                         list.Add(scope.ServiceProvider.GetService(t));
                     });
+                    _init_action?.DynamicInvoke(list.ToArray());
                     for (int i = range.Item1; i < range.Item2; i++)
                     {
                         var objs = new List<object>();
@@ -80,6 +94,7 @@ namespace Silkier.Extensions
                         objs.AddRange(list);
                         action.DynamicInvoke(objs.ToArray());
                     }
+                    _finish_action?.DynamicInvoke(list.ToArray());
                 }
             });
         }
