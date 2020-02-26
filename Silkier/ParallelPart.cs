@@ -40,7 +40,9 @@ namespace Silkier.Extensions
         public static ParallelLoopResult ForEach<T, T1>(IEnumerable<T> source, ParallelOptions  options, IServiceProvider factory, Action<T, T1> action)
                                     => ForEach<T, Action<T, T1>>(source, options, factory, action);
 
-         
+        public static ParallelLoopResult ForEach<T, T1>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1> action)
+                                 => ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action);
+
         public static ParallelLoopResult ForEach<T, T1, T2>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1, T2> action)
                                     => ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action);
 
