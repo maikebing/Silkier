@@ -84,7 +84,15 @@ namespace Silkier.Extensions
                     List<object> list = new List<object>();
                     action.GetType().GenericTypeArguments.Skip(1).ToList().ForEach(t =>
                     {
-                        list.Add(scope.ServiceProvider.GetService(t));
+                        var obj = scope.ServiceProvider.GetService(t);
+                        if (obj != null)
+                        {
+                            list.Add(obj);
+                        }
+                        else
+                        {
+                          list.Add(Activator.CreateInstance(t));
+                        }
                     });
                     _init_action?.DynamicInvoke(list.ToArray());
                     for (int i = range.Item1; i < range.Item2; i++)
