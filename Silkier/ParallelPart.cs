@@ -132,7 +132,8 @@ namespace Silkier.Extensions
         }
         private static ParallelLoopResult ForEach<T, A, B>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, A action, B _init_action, B _finish_action) where A : Delegate, B where B : Delegate
         {
-            int rangeSize = (source.Count() + parallelOptions.MaxDegreeOfParallelism - 1) / parallelOptions.MaxDegreeOfParallelism;
+            int rangeSize = parallelOptions.MaxDegreeOfParallelism ==1? source.Count() : (source.Count() + parallelOptions.MaxDegreeOfParallelism - 1) / parallelOptions.MaxDegreeOfParallelism;
+            
             return Parallel.ForEach(Partitioner.Create(0, source.Count(), Math.Min(source.Count(), rangeSize)), parallelOptions ?? new ParallelOptions(), (range, loopState) =>
             {
                 using (var scope = factory.CreateScope())
