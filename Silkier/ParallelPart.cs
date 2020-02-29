@@ -120,6 +120,22 @@ namespace Silkier.Extensions
         {
             return ForEach(source, parallelOptions, factory, action, (Delegate)_init_action, _finish_action);
         }
+        public static ParallelLoopResult ForEach<T, T1, T2,T3>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, Action<T, T1, T2,T3> action, Action<T1, T2> _init_action, Action<T1, T2,T3> _finish_action)
+        {
+            return ForEach(source, parallelOptions, factory, action, (Delegate)_init_action, _finish_action);
+        }
+        public static ParallelLoopResult ForEach<T, T1, T2, T3,T4,T5,T6>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1, T2, T3, T4, T5, T6> action, Action<T1, T2, T3, T4, T5, T6> _init_action, Action<T1, T2, T3, T4, T5, T6> _finish_action)
+        {
+            return ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action, (Delegate)_init_action, _finish_action);
+        }
+        public static ParallelLoopResult ForEach<T, T1, T2, T3,T4,T5>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1, T2, T3, T4, T5> action, Action<T1, T2, T3, T4, T5> _init_action, Action<T1, T2, T3, T4, T5> _finish_action)
+        {
+            return ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action, (Delegate)_init_action, _finish_action);
+        }
+        public static ParallelLoopResult ForEach<T, T1, T2, T3, T4>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1, T2, T3, T4> action, Action<T1, T2, T3, T4> _init_action, Action<T1, T2, T3, T4> _finish_action)
+        {
+            return ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action, (Delegate)_init_action, _finish_action);
+        }
         public static ParallelLoopResult ForEach<T, T1, T2,T3>(IEnumerable<T> source, int _maxDegreeOfParallelism, IServiceProvider factory, Action<T, T1, T2,T3> action, Action<T1, T2,T3> _init_action, Action<T1, T2,T3> _finish_action)
         {
             return ForEach(source, new ParallelOptions() { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, factory, action, (Delegate)_init_action, _finish_action);
@@ -128,6 +144,7 @@ namespace Silkier.Extensions
         {
             return ForEach(source, new ParallelOptions() {  MaxDegreeOfParallelism=_maxDegreeOfParallelism}  , factory, action, (Delegate)_init_action, _finish_action);
         }
+
         public static ParallelLoopResult ForEach<T, T1>(IEnumerable<T> source, ParallelOptions parallelOptions, IServiceProvider factory, Action<T,T1> action,Action<T1> _init_action, Action<T1> _finish_action)  
         {
             return ForEach(source, parallelOptions, factory, action, (Delegate)_init_action, _finish_action);
