@@ -103,7 +103,7 @@ namespace Demos
                bc.Blogs.Add(new Blog() { Name = i.ToString(), Url = b.Url });
                Console.WriteLine($"{Thread.CurrentThread} {i}{b?.Name}{x?.Name}");
                bc.SaveChanges();
-           });
+           }, ( Blog b, BlogX x, BloggingContext bc) => Console.WriteLine("init"), (Blog b, BlogX x, BloggingContext bc) =>Console.WriteLine("end"));
         }
 
         private static async Task SimulateRequestsAsync(IServiceProvider serviceProvider, Stopwatch stopwatch)
