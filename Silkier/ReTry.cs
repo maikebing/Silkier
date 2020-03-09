@@ -110,14 +110,7 @@ namespace Silkier
             }
             throw exception;
         }
-        /// <summary>
-        /// 不论遇到任何错误， 最多尝试<paramref name="times"/>次，同时遇到任何错误 可以通过<paramref name="efunc"/>接收错误信息
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="times">次数</param>
-        /// <param name="action">要执行的方法</param>
-        /// <param name="efunc">接收当前次数和异常信息</param>
-        /// <returns></returns>
+       
         public static T RetryOnAny<T>(int times, Func<int, T> action, Action<(int current, Exception ex)> efunc)
         {
             Exception exception = null;
@@ -126,6 +119,23 @@ namespace Silkier
                 try
                 {
                     return action.Invoke(i + 1);
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                    efunc?.Invoke((i + 1, ex));
+                }
+            }
+            throw exception;
+        }
+        public static T RetryOnAny<T>(int times, Func<T> action, Action<(int current, Exception ex)> efunc)
+        {
+            Exception exception = null;
+            for (int i = 0; i < times; i++)
+            {
+                try
+                {
+                    return action.Invoke();
                 }
                 catch (Exception ex)
                 {
