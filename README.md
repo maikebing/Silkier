@@ -31,18 +31,20 @@ Silkier.EFCore 是一个针对EF.Core的扩展， 主要功能包括 执行原�
 
 
  ## What is Silkier.AspNetCore?
- Silkier.AspNetCore have  ConfigureWindowsServices    and  UseJsonToSettings  and more ...
+ [![Nuget Version](https://img.shields.io/nuget/v/Silkier.AspNetCore.svg)](https://www.nuget.org/packages/Silkier.AspNetCore/)
+
+Silkier.AspNetCore have  ConfigureWindowsServices    and  UseJsonToSettings  and more ...
 
 Silkier.AspNetCore 有用于配置Windows或者linux时的服务方式运行的参数，完全自动识别是否服务方式等， 同时有使用特殊json作为配置的扩展。 
 
- [![Nuget Version](https://img.shields.io/nuget/v/Silkier.AspNetCore.svg)](https://www.nuget.org/packages/Silkier.AspNetCore/)
+ 
 
   ## What is Silkier.HealthChecks.NTPServer?
 
-  Silkier.HealthChecks.NTPServer is an NTP time server health check and time difference check extension
-  Silkier.HealthChecks.NTPServer 是一个NTP时间服务器健康检查和时间差异检查的扩展。 
+ [![Nuget Version](https://img.shields.io/nuget/v/Silkier.HealthChecks.NTPServer.svg)](https://www.nuget.org/packages/Silkier.HealthChecks.NTPServer/)  
 
- [![Nuget Version](https://img.shields.io/nuget/v/Silkier.HealthChecks.NTPServer.svg)](https://www.nuget.org/packages/Silkier.HealthChecks.NTPServer/)
+ Silkier.HealthChecks.NTPServer is an NTP time server health check and time difference check extension
+  Silkier.HealthChecks.NTPServer 是一个NTP时间服务器健康检查和时间差异检查的扩展。 
 
 
 
