@@ -33,8 +33,7 @@ Silkier.AspNetCore 有用于配置Windows或者linux时的服务方式运行的�
   Silkier.HealthChecks.NTPServer is an NTP time server health check and time difference check extension
   Silkier.HealthChecks.NTPServer 是一个NTP时间服务器健康检查和时间差异检查的扩展。 
   
- [![Nuget Version](https://img.shields.io/nuget/v/Silkier.HealthChecks.NTPServer.svg)](https://www.nuget.org/packages/
-Silkier.HealthChecks.NTPServer/)
+ [![Nuget Version](https://img.shields.io/nuget/v/Silkier.HealthChecks.NTPServer.svg)](https://www.nuget.org/packages/Silkier.HealthChecks.NTPServer/)
 
 
 
