@@ -15,7 +15,7 @@ Silkier  是一个常用扩展集合 比如 重试、分区并行、对象池、
 
 ## What is Silkier.EFCore?
 
-[![Nuget Version](https://img.shields.io/nuget/v//Silkier.EFCore.svg)](https://www.nuget.org/packages/Silkier.EFCore/)
+[![Nuget Version](https://img.shields.io/nuget/v/Silkier.EFCore.svg)](https://www.nuget.org/packages/Silkier.EFCore/)
 
  Silkier.EFCore is an extension for EF.Core, and the main features include executing the original sql statement, converting the original sql statement to a tuple or a class or array or json  object or DataTable .
  
@@ -26,7 +26,7 @@ Silkier.EFCore 是一个针对EF.Core的扩展， 主要功能包括 执行原�
  
 Silkier.AspNetCore 有用于配置Windows或者linux时的服务方式运行的参数，完全自动识别是否服务方式等， 同时有使用特殊json作为配置的扩展。 
   
- [![Nuget Version](https://img.shields.io/nuget/v/AspNetCore.svg)](https://www.nuget.org/packages/AspNetCore/)
+ [![Nuget Version](https://img.shields.io/nuget/v/Silkier.AspNetCore.svg)](https://www.nuget.org/packages/Silkier.AspNetCore/)
  
   ## What is Silkier.HealthChecks.NTPServer?
   
