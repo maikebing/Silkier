@@ -18,21 +18,25 @@ namespace Silkier.Extensions
             cmd.CommandText = commandText;
             return cmd;
         }
+
         public static IDbCommand SetCommandTimeout(this IDbCommand command, TimeSpan span)
         {
             command.CommandTimeout = (int)span.TotalSeconds;
             return command;
         }
+        [Obsolete("请使用Silkier.EFCore.DbReaderExtensions中的方法")]
         public static List<T> ExecuteList<T>(this IDbCommand command) where T : class
         {
             return command.ExecuteReader().ToList<T>();
         }
+        [Obsolete("请使用Silkier.EFCore.DbReaderExtensions中的方法")]
         public static List<T> ExecuteTupleLis<T>(this IDbCommand command)
         {
             return command.ExecuteReader().ToTupleList<T>();
         }
         public static string ToISO8601(this System.DateTime time) => time.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:sssZ");
 
+        [Obsolete("请使用Silkier.EFCore.DbReaderExtensions中的方法")]
         public static T ToJson<T>(this IDataReader dataReader) where T : class
         {
             return dataReader.ToJson().ToObject<T>();
@@ -107,7 +111,7 @@ namespace Silkier.Extensions
             }
             return jArray;
         }
-
+        [Obsolete("请使用Silkier.EFCore.DbReaderExtensions中的方法")]
         public static List<T> ToList<T>(this DataTable dt) where T : class
         {
             List<T> jArray = new List<T>();
@@ -148,7 +152,7 @@ namespace Silkier.Extensions
             return jArray;
         }
 
-
+        [Obsolete("请使用Silkier.EFCore.DbReaderExtensions中的方法")]
         public static List<T> ToList<T>(this IDataReader dataReader) where T : class
         {
             List<T> jArray = new List<T>();
@@ -190,7 +194,7 @@ namespace Silkier.Extensions
             }
             return jArray;
         }
-
+        [Obsolete("请使用Silkier.EFCore.DbReaderExtensions中的方法")]
         public static List<T> ToTupleList<T>(this IDataReader dataReader)
         {
             List<T> jArray = new List<T>();

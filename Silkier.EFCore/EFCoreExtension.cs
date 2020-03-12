@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 
-namespace Silkier.Extensions.EFCore
+namespace Silkier.EFCore
 {
     public static class EFCoreExtension
     {
