@@ -1,6 +1,6 @@
 # Silkier
 [![License](https://img.shields.io/github/license/maikebing/Silkier.svg)](https://github.com/maikebing/Silkier/blob/master/LICENSE)
-[![Build status](https://ci.appveyor.com/api/projects/status/fle0qe4uk9lyjax5?svg=true)](https://ci.appveyor.com/project/MaiKeBing/silkier)
+  [![Build status](https://ci.appveyor.com/api/projects/status/fle0qe4uk9lyjax5?svg=true)](https://ci.appveyor.com/project/MaiKeBing/silkier)  ![.NET Core](https://github.com/maikebing/Silkier/workflows/.NET%20Core/badge.svg)
 
 ## Our goal: One line of code, everything's done. 
 
