@@ -74,6 +74,10 @@ namespace Silkier.Extensions
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
+            finally
+            {
+                dataReader.Close();
+            }
             return jArray;
         }
 
@@ -192,6 +196,10 @@ namespace Silkier.Extensions
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
+            finally
+            {
+                dataReader.Close();
+            }
             return jArray;
         }
         [Obsolete("请使用Silkier.EFCore.DbReaderExtensions中的方法")]
@@ -235,6 +243,10 @@ namespace Silkier.Extensions
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                dataReader.Close();
             }
             return jArray;
         }
