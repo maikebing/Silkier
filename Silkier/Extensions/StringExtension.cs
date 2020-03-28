@@ -369,17 +369,24 @@ namespace Silkier.Extensions
             t2 = t2.Replace("-", "");
             return t2;
         }
-        public static string GetMd5Sum(this string  s)
+        public static string GetMd5Sum(this string s)
         {
             string t2 = BitConverter.ToString(md5.ComputeHash(s.ToBytes()));
             t2 = t2.Replace("-", "");
             return t2;
         }
-        public static string GetMd5Sum<T>(this T s) where T:class
+        public static string GetMd5Sum(this byte[] s)
         {
-            var str = Newtonsoft.Json.JsonConvert.SerializeObject(s);
-            string t2 = BitConverter.ToString(md5.ComputeHash(str.ToBytes()));
+            string t2 = BitConverter.ToString(md5.ComputeHash(s));
             t2 = t2.Replace("-", "");
+            return t2;
+        }
+        public static string GetMd5Sum(this Stream s)
+        {
+            if (s.Position != 0 && s.CanSeek) s.Seek(0, SeekOrigin.Begin);
+            string t2 = BitConverter.ToString(md5.ComputeHash(s));
+            t2 = t2.Replace("-", "");
+            if (s.Position != 0 && s.CanSeek) s.Seek(0, SeekOrigin.Begin);
             return t2;
         }
     }
