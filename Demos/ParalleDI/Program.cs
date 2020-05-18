@@ -95,8 +95,6 @@ namespace Demos
 
         private static void SetupDatabase(IServiceProvider serviceProvider)
         {
-
-            int x = 0;
             List<int> list = Enumerable.Range(1, 1000).ToList();
             ParallelPart.ForEach(list, 10, serviceProvider, (int i, Blog b, BlogX x, BloggingContext bc) =>
            {
