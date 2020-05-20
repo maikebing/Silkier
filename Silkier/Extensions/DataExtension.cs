@@ -24,8 +24,46 @@ namespace Silkier.Extensions
             command.CommandTimeout = (int)span.TotalSeconds;
             return command;
         }
-       
+        public static IList<T> ToIList<T>(this DataTable dt) where T : class => dt.ToList<T>();
+        public static List<T> ToList<T>(this DataTable dt) where T : class
+        {
+            List<T> jArray = new List<T>();
+            var prs = typeof(T).GetProperties();
+            try
+            {
+                for (int il = 0; il < dt.Rows.Count; il++)
+                {
+                    T jObject = Activator.CreateInstance<T>();
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        try
+                        {
+                            string strKey = dt.Columns[i].ColumnName;
+                            if (dt.Rows[il].ItemArray[i] != DBNull.Value)
+                            {
+                                object obj = Convert.ChangeType(dt.Rows[il].ItemArray[i], dt.Columns[i].DataType);
 
+                                var p = prs.FirstOrDefault(px => px.Name.ToLower() == strKey.ToLower());
+                                if (p != null)
+                                {
+                                    SetValue(jObject, dt.Columns[i].DataType, obj, p);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.Message);
+                        }
+                    }
+                    jArray.Add(jObject);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+            return jArray;
+        }
 
         public static JArray ToJson(this IDataReader dataReader)
         {
