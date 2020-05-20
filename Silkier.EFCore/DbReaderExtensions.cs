@@ -74,6 +74,10 @@ namespace Silkier.EFCore
             }
             return t;
         }
+   
+        public static async Task<IList<T>> ToIListAsync<T>(this IDataReader dr) => await ToListAsync<T>((DbDataReader)dr);
+        public static async Task<IList<T>> ToIListAsync<T>(this DbDataReader dr)=> await ToListAsync<T>(dr);
+
         public static async Task<List<T>> ToListAsync<T>(this IDataReader dr) => await ToListAsync<T>((DbDataReader)dr);
         public static async Task<List<T>> ToListAsync<T>(this DbDataReader dr)
         {

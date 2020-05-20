@@ -18,11 +18,14 @@ namespace Silkier.EFCore
             _sql = sql;
             _parameters = parameters;
         }
-        public   Task<IList<T>> ToListAsync()
+        public   Task<IList<T>> ToIListAsync()
         {
-            return   ExecuteReaderAsync(  (dbReader) =>   dbReader.ToListAsync<T>());
+            return ExecuteReaderAsync(  (dbReader) => dbReader.ToIListAsync<T>());
         }
-
+        public Task<List<T>> ToListAsync()
+        {
+            return ExecuteReaderAsync((dbReader) => dbReader.ToListAsync<T>());
+        }
         private   Task<U> ExecuteReaderAsync<U>(Func<DbDataReader, Task<U>> p)
         {
              return   _databaseFacade.ExecuteReaderAsync(_sql, _parameters,p);
