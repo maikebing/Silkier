@@ -10,6 +10,8 @@ namespace Silkier.EFCore
 {
     public static class DbReaderExtensions
     {
+        public static IDictionary<string, DbColumn> GetSchema<T>(this IDataReader dr) => GetSchema<T>((DbDataReader)dr);
+
         public static IDictionary<string, DbColumn> GetSchema<T>(this DbDataReader dr)
         {
             IDictionary<string, DbColumn> valuePairs;
@@ -28,7 +30,7 @@ namespace Silkier.EFCore
             }
             return valuePairs;
         }
-
+        public static T MapObject<T>(this IDataReader dr, IDictionary<string, DbColumn> colMapping) => MapObject<T>((DbDataReader)dr, colMapping);
         public static T MapObject<T>(this DbDataReader dr, IDictionary<string, DbColumn> colMapping)
         {
             T t;
@@ -72,7 +74,7 @@ namespace Silkier.EFCore
             }
             return t;
         }
-
+        public static async Task<IList<T>> ToListAsync<T>(this IDataReader dr) => await ToListAsync<T>((DbDataReader)dr);
         public static async Task<IList<T>> ToListAsync<T>(this DbDataReader dr)
         {
 
@@ -86,7 +88,7 @@ namespace Silkier.EFCore
 
             return objList;
         }
-
+        public static IList<T> ToList<T>(this IDataReader dr) => ToList<T>((DbDataReader)dr);
         public static IList<T> ToList<T>(this DbDataReader dr)
         {
             var objList = new List<T>();
@@ -97,7 +99,7 @@ namespace Silkier.EFCore
 
             return objList;
         }
-
+        public static DataTable ToDataTable(this IDataReader dr) => ToDataTable((DbDataReader)dr);
         public static DataTable ToDataTable(this DbDataReader dr)
         {
             DataTable objDataTable = new DataTable();
@@ -118,7 +120,7 @@ namespace Silkier.EFCore
             }
             return objDataTable;
         }
-
+        public static async Task<DataTable> ToDataTableAsync(this IDataReader dr) => await ToDataTableAsync((DbDataReader)dr);
         public static async Task<DataTable> ToDataTableAsync(this DbDataReader dr)
         {
             DataTable objDataTable = new DataTable();
@@ -139,6 +141,7 @@ namespace Silkier.EFCore
             }
             return objDataTable;
         }
+        public static async Task<T> FirstOrDefaultAsync<T>(this IDataReader dr) => await FirstOrDefaultAsync<T>((DbDataReader)dr);
         public static async Task<T> FirstOrDefaultAsync<T>(this DbDataReader dr)
         {
             var colMapping = dr.GetSchema<T>();
@@ -148,6 +151,7 @@ namespace Silkier.EFCore
 
             return default(T);
         }
+        public static T FirstOrDefault<T>(this IDataReader dr) => FirstOrDefault<T>((DbDataReader)dr);
         public static T FirstOrDefault<T>(this DbDataReader dr)
         {
             var colMapping = dr.GetSchema<T>();
@@ -156,6 +160,7 @@ namespace Silkier.EFCore
                     return dr.MapObject<T>(colMapping);
             return default(T);
         }
+        public static async Task<T> SingleOrDefaultAsync<T>(this IDataReader dr) => await SingleOrDefaultAsync<T>((DbDataReader)dr);
         public static async Task<T> SingleOrDefaultAsync<T>(this DbDataReader dr)
         {
             var colMapping = dr.GetSchema<T>();
@@ -174,6 +179,7 @@ namespace Silkier.EFCore
 
             return obj;
         }
+        public static T SingleOrDefault<T>(this IDataReader dr) => SingleOrDefault<T>((DbDataReader)dr);
         public static T SingleOrDefault<T>(this DbDataReader dr)
         {
             var colMapping = dr.GetSchema<T>();
