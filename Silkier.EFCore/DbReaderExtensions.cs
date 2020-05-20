@@ -74,8 +74,8 @@ namespace Silkier.EFCore
             }
             return t;
         }
-        public static async Task<IList<T>> ToListAsync<T>(this IDataReader dr) => await ToListAsync<T>((DbDataReader)dr);
-        public static async Task<IList<T>> ToListAsync<T>(this DbDataReader dr)
+        public static async Task<List<T>> ToListAsync<T>(this IDataReader dr) => await ToListAsync<T>((DbDataReader)dr);
+        public static async Task<List<T>> ToListAsync<T>(this DbDataReader dr)
         {
 
             var objList = new List<T>();
@@ -88,8 +88,13 @@ namespace Silkier.EFCore
 
             return objList;
         }
-        public static IList<T> ToList<T>(this IDataReader dr) => ToList<T>((DbDataReader)dr);
-        public static IList<T> ToList<T>(this DbDataReader dr)
+        public static List<T> ToList<T>(this IDataReader dr) => ToList<T>((DbDataReader)dr);
+
+        public static IList<T> ToIList<T>(this IDataReader dr) => ToList<T>((DbDataReader)dr);
+
+        public static IList<T> ToIList<T>(this DbDataReader dr)  =>ToList<T>( dr);
+
+        public static List<T> ToList<T>(this DbDataReader dr)
         {
             var objList = new List<T>();
             var colMapping = dr.GetSchema<T>();
