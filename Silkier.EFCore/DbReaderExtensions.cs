@@ -81,15 +81,12 @@ namespace Silkier.EFCore
         public static async Task<List<T>> ToListAsync<T>(this IDataReader dr) => await ToListAsync<T>((DbDataReader)dr);
         public static async Task<List<T>> ToListAsync<T>(this DbDataReader dr)
         {
-
             var objList = new List<T>();
-
             var colMapping = dr.GetSchema<T>();
-
             if (dr.HasRows)
                 while (await dr.ReadAsync())
                     objList.Add(dr.MapObject<T>(colMapping));
-
+            dr.Close();
             return objList;
         }
         public static List<T> ToList<T>(this IDataReader dr) => ToList<T>((DbDataReader)dr);
@@ -105,7 +102,7 @@ namespace Silkier.EFCore
             if (dr.HasRows)
                 while (dr.Read())
                     objList.Add(dr.MapObject<T>(colMapping));
-
+             dr.Close();
             return objList;
         }
         public static DataTable ToDataTable(this IDataReader dr) => ToDataTable((DbDataReader)dr);
@@ -127,6 +124,7 @@ namespace Silkier.EFCore
                 }
                 objDataTable.EndLoadData();
             }
+            dr.Close();
             return objDataTable;
         }
         public static async Task<DataTable> ToDataTableAsync(this IDataReader dr) => await ToDataTableAsync((DbDataReader)dr);
@@ -148,6 +146,7 @@ namespace Silkier.EFCore
                 }
                 objDataTable.EndLoadData();
             }
+            dr.Close();
             return objDataTable;
         }
         public static async Task<T> FirstOrDefaultAsync<T>(this IDataReader dr) => await FirstOrDefaultAsync<T>((DbDataReader)dr);
@@ -157,7 +156,7 @@ namespace Silkier.EFCore
             if (dr.HasRows)
                 while (await dr.ReadAsync())
                     return dr.MapObject<T>(colMapping);
-
+            dr.Close();
             return default(T);
         }
         public static T FirstOrDefault<T>(this IDataReader dr) => FirstOrDefault<T>((DbDataReader)dr);
@@ -167,6 +166,7 @@ namespace Silkier.EFCore
             if (dr.HasRows)
                 while (dr.Read())
                     return dr.MapObject<T>(colMapping);
+            dr.Close();
             return default(T);
         }
         public static async Task<T> SingleOrDefaultAsync<T>(this IDataReader dr) => await SingleOrDefaultAsync<T>((DbDataReader)dr);
@@ -185,7 +185,7 @@ namespace Silkier.EFCore
                     obj = dr.MapObject<T>(colMapping);
                     hasResult = true;
                 }
-
+            dr.Close();
             return obj;
         }
         public static T SingleOrDefault<T>(this IDataReader dr) => SingleOrDefault<T>((DbDataReader)dr);
@@ -204,7 +204,7 @@ namespace Silkier.EFCore
                     obj = dr.MapObject<T>(colMapping);
                     hasResult = true;
                 }
-
+            dr.Close();
             return obj;
         }
     }
