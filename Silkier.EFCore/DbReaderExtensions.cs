@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using Silkier.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -10,6 +12,54 @@ namespace Silkier.EFCore
 {
     public static class DbReaderExtensions
     {
+        public static JArray ToJson(this IDataReader dataReader)
+        {
+            JArray jArray = new JArray();
+            try
+            {
+                while (dataReader.Read())
+                {
+                    JObject jObject = new JObject();
+                    for (int i = 0; i < dataReader.FieldCount; i++)
+                    {
+                        try
+                        {
+                            string strKey = dataReader.GetName(i);
+                            if (dataReader[i] != DBNull.Value)
+                            {
+                                object obj = Convert.ChangeType(dataReader[i], dataReader.GetFieldType(i));
+                                jObject.Add(strKey, JToken.FromObject(obj));
+                            }
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                    jArray.Add(jObject);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                dataReader.Close();
+            }
+            return jArray;
+        }
+        public static IDbCommand CreateCommand(this IDbConnection db, string commandText)
+        {
+            var cmd = db.CreateCommand();
+            cmd.CommandText = commandText;
+            return cmd;
+        }
+
+        public static IDbCommand SetCommandTimeout(this IDbCommand command, TimeSpan span)
+        {
+            command.CommandTimeout = (int)span.TotalSeconds;
+            return command;
+        }
         public static IDictionary<string, DbColumn> GetSchema<T>(this IDataReader dr) => GetSchema<T>((DbDataReader)dr);
 
         public static IDictionary<string, DbColumn> GetSchema<T>(this DbDataReader dr)
@@ -106,6 +156,9 @@ namespace Silkier.EFCore
             return objList;
         }
         public static DataTable ToDataTable(this IDataReader dr) => ToDataTable((DbDataReader)dr);
+
+        public static string ToCvsstr(this IDataReader dr) => dr.ToDataTable().ToCsvStr();
+
         public static DataTable ToDataTable(this DbDataReader dr)
         {
             DataTable objDataTable = new DataTable();

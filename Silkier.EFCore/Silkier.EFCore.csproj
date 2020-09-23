@@ -22,4 +22,7 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Silkier\Silkier.csproj" />
+  </ItemGroup>
 </Project>

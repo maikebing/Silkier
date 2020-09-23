@@ -12,18 +12,7 @@ namespace Silkier.Extensions
 {
     public static class DataExtension
     {
-        public static IDbCommand CreateCommand(this IDbConnection db, string commandText)
-        {
-            var cmd = db.CreateCommand();
-            cmd.CommandText = commandText;
-            return cmd;
-        }
-
-        public static IDbCommand SetCommandTimeout(this IDbCommand command, TimeSpan span)
-        {
-            command.CommandTimeout = (int)span.TotalSeconds;
-            return command;
-        }
+      
         public static IList<T> ToIList<T>(this DataTable dt) where T : class => dt.ToList<T>();
         public static List<T> ToList<T>(this DataTable dt) where T : class
         {
@@ -65,45 +54,14 @@ namespace Silkier.Extensions
             return jArray;
         }
 
-        public static JArray ToJson(this IDataReader dataReader)
-        {
-            JArray jArray = new JArray();
-            try
-            {
-                while (dataReader.Read())
-                {
-                    JObject jObject = new JObject();
-                    for (int i = 0; i < dataReader.FieldCount; i++)
-                    {
-                        try
-                        {
-                            string strKey = dataReader.GetName(i);
-                            if (dataReader[i] != DBNull.Value)
-                            {
-                                object obj = Convert.ChangeType(dataReader[i], dataReader.GetFieldType(i));
-                                jObject.Add(strKey, JToken.FromObject(obj));
-                            }
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
-                    jArray.Add(jObject);
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-            }
-            finally
-            {
-                dataReader.Close();
-            }
-            return jArray;
-        }
+       
 
 
-
+        /// <summary>
+        /// DataTable 转为 Json
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         public static JArray ToJson(this DataTable dt)
         {
             JArray jArray = new JArray();
@@ -184,6 +142,39 @@ namespace Silkier.Extensions
                     yield return element;
                 }
             }
+        }
+
+
+
+        /// <summary>
+        ///将DataTable转换为标准的CSV字符串
+        /// </summary>
+        /// <param name="dt">数据表</param>
+        /// <returns>返回标准的CSV</returns>
+        /// <seealso cref="https://github.com/Coldairarrow/EFCore.Sharding/blob/5216ffc6330e84de484865eae645c0be1f2be180/src/EFCore.Sharding.Tests/Util/Extention.DataTable.cs"/>
+        public static string ToCsvStr(this DataTable dt)
+        {
+            //以半角逗号（即,）作分隔符，列为空也要表达其存在。
+            //列内容如存在半角逗号（即,）则用半角引号（即""）将该字段值包含起来。
+            //列内容如存在半角引号（即"）则应替换成半角双引号（""）转义，并用半角引号（即""）将该字段值包含起来。
+            StringBuilder sb = new StringBuilder();
+            DataColumn colum;
+            foreach (DataRow row in dt.Rows)
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    colum = dt.Columns[i];
+                    if (i != 0) sb.Append(",");
+                    if (colum.DataType == typeof(string) && row[colum].ToString().Contains(","))
+                    {
+                        sb.Append("\"" + row[colum].ToString().Replace("\"", "\"\"") + "\"");
+                    }
+                    else sb.Append(row[colum].ToString());
+                }
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
 
     }
