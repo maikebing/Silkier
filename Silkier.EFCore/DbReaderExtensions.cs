@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -98,10 +99,24 @@ namespace Silkier.EFCore
                     object xobj = obj;
                     for (int i = 0; i < fields.Length; i++)
                     {
-                        var val = Convert.ChangeType(dr.GetValue(i), fields[i].FieldType);
-                        fields[i].SetValue(xobj, val == DBNull.Value ? null : val);
+                        try
+                        {
+                            if (dr.GetValue(i) == DBNull.Value)
+                            {
+                                fields[i].SetValue(xobj,  fields[i].FieldType.GetDefaultValue());
+                            }
+                            else
+                            {
+                                var val = Convert.ChangeType(dr.GetValue(i), fields[i].FieldType);
+                                fields[i].SetValue(xobj, val);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"{ fields[i].Name} {ex.Message}");
+                        }
                     }
-                    obj = (T)Convert.ChangeType(xobj, typeof(T));
+                    obj = (T)xobj;
                 }
                 else
                 {
@@ -112,11 +127,11 @@ namespace Silkier.EFCore
                         if (colMapping.ContainsKey(propName))
                         {
                             var val = dr.GetValue(colMapping[prop.Name.ToLower()].ColumnOrdinal.Value);
-                            prop.SetValue(obj, val == DBNull.Value ? null : val);
+                            prop.SetValue(obj, val == DBNull.Value ? prop.PropertyType.GetDefaultValue() : val);
                         }
                         else
                         {
-                            prop.SetValue(obj, null);
+                            prop.SetValue(obj,prop.PropertyType.GetDefaultValue());
                         }
                     }
                 }
@@ -124,7 +139,15 @@ namespace Silkier.EFCore
             }
             return t;
         }
-   
+        /// <summary>
+        /// 获取变量的默认值
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static object GetDefaultValue(this Type type)
+        {
+            return type.IsValueType ? Activator.CreateInstance(type) : null;
+        }
         public static async Task<IList<T>> ToIListAsync<T>(this IDataReader dr) => await ToListAsync<T>((DbDataReader)dr);
         public static async Task<IList<T>> ToIListAsync<T>(this DbDataReader dr)=> await ToListAsync<T>(dr);
 
