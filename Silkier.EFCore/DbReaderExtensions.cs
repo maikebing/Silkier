@@ -127,6 +127,12 @@ namespace Silkier.EFCore
                         if (colMapping.ContainsKey(propName))
                         {
                             var val = dr.GetValue(colMapping[prop.Name.ToLower()].ColumnOrdinal.Value);
+                            
+                            var type = Nullable.GetUnderlyingType(prop.PropertyType);
+                            if (type != null && type.IsEnum)
+                            {
+                                val = val == DBNull.Value ? null : Enum.ToObject(type, val);
+                            }
                             prop.SetValue(obj, val == DBNull.Value ? prop.PropertyType.GetDefaultValue() : val);
                         }
                         else
