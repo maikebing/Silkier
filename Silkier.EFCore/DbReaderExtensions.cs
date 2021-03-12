@@ -133,7 +133,8 @@ namespace Silkier.EFCore
                             {
                                 val = val == DBNull.Value ? null : Enum.ToObject(type, val);
                             }
-                            prop.SetValue(obj, val == DBNull.Value ? prop.PropertyType.GetDefaultValue() : val);
+                            var evar = System.Convert.ChangeType( val == DBNull.Value ? prop.PropertyType.GetDefaultValue() : val,prop.PropertyType);
+                            prop.SetValue(obj, evar);
                         }
                         else
                         {
