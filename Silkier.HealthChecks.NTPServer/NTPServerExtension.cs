@@ -33,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             socket.Connect(ipEndPoint);
             // Stops code hang if NTP is blocked
-            socket.ReceiveTimeout = 3000;
+            socket.ReceiveTimeout = TimeSpan.FromSeconds(10).Milliseconds;
             socket.Send(ntpData);
             socket.Receive(ntpData);
             socket.Close();
@@ -71,7 +71,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 try
                 {
                     var dtx = new List<(int Id, DateTime webtime, DateTime locdateTime)>();
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         var webtime1 = getWebTime(ntpserver);
                         dtx.Add((i, webtime1, DateTime.Now));
@@ -79,7 +79,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     var avg_w_l_TimeSpan = from t in dtx select t.locdateTime.Subtract(t.webtime).TotalSeconds;
                     var avgweb_loc = avg_w_l_TimeSpan.Average();
                     List<double> webavgts = new List<double>();
-                    for (int i = 1; i < 10; i++)
+                    for (int i = 1; i < 3; i++)
                     {
                         webavgts.Add(dtx[i].webtime.Subtract(dtx[i - 1].webtime).TotalSeconds);
                     }
