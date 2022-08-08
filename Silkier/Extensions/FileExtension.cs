@@ -55,7 +55,7 @@ namespace Silkier.Extensions
         /// <returns></returns>
         public static string GetSHA1(this FileInfo s)
         {
-            SHA1 sha1 = new SHA1CryptoServiceProvider();
+            SHA1 sha1 = SHA1.Create() ;
             byte[] retval = sha1.ComputeHash(s.ReadAllBytes());
             string result = BitConverter.ToString(retval).Replace("-", "");
             return result;
@@ -67,7 +67,7 @@ namespace Silkier.Extensions
         /// <returns></returns>
         public static string GetMd5Sum(this FileInfo s)
         {
-            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            MD5 md5 = MD5.Create();
             string t2 = BitConverter.ToString(md5.ComputeHash(s.ReadAllBytes()));
             t2 = t2.Replace("-", "");
             return t2;

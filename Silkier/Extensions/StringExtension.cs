@@ -364,7 +364,7 @@ namespace Silkier.Extensions
         {
             return str.Take(length).ToArray();
         }
-        static MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+        static readonly MD5 md5 = MD5.Create();
         public static byte[] ToBytes(this string s)
         {
             return System.Text.Encoding.Default.GetBytes(s);
@@ -409,20 +409,7 @@ namespace Silkier.Extensions
         private static BindingFlags _bindingFlags { get; }
            = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static;
 
-        /// <summary>
-        /// 将一个object对象序列化，返回一个byte[]         
-        /// </summary> 
-        /// <param name="obj">能序列化的对象</param>
-        /// <returns></returns> 
-        public static byte[] ToBytes(this object obj)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(ms, obj);
-                return ms.GetBuffer();
-            }
-        }
+      
 
         /// <summary>
         /// 判断是否为Null或者空

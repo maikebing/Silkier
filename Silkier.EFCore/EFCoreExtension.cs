@@ -25,18 +25,18 @@ namespace Silkier.EFCore
         {
             IRelationalDatabaseFacadeDependencies facadeDependencies = GetFacadeDependencies(databaseFacade);
             IConcurrencyDetector concurrencyDetector = ((IDatabaseFacadeDependencies)facadeDependencies).ConcurrencyDetector;
-            IDiagnosticsLogger<DbLoggerCategory.Database.Command> commandLogger = ((IDatabaseFacadeDependencies)facadeDependencies).CommandLogger;
+ 
             using (concurrencyDetector.EnterCriticalSection())
             {
                 var rawSqlCommand = databaseFacade.Build(sql, parameters);
-                return rawSqlCommand.RelationalCommand.ExecuteNonQuery(new RelationalCommandParameterObject(facadeDependencies.RelationalConnection, rawSqlCommand.ParameterValues, null, ((IDatabaseFacadeDependenciesAccessor)databaseFacade).Context, commandLogger));
+                return rawSqlCommand.RelationalCommand.ExecuteNonQuery(new RelationalCommandParameterObject(facadeDependencies.RelationalConnection, rawSqlCommand.ParameterValues, null, ((IDatabaseFacadeDependenciesAccessor)databaseFacade).Context, facadeDependencies.CommandLogger));
             }
         }
         public static async Task<int> ExecuteNonQueryAsync(this DatabaseFacade databaseFacade, string sql, params object[] parameters)
         {
             IRelationalDatabaseFacadeDependencies facadeDependencies = GetFacadeDependencies(databaseFacade);
             IConcurrencyDetector concurrencyDetector = ((IDatabaseFacadeDependencies)facadeDependencies).ConcurrencyDetector;
-            IDiagnosticsLogger<DbLoggerCategory.Database.Command> commandLogger = ((IDatabaseFacadeDependencies)facadeDependencies).CommandLogger;
+            var  commandLogger = facadeDependencies.CommandLogger;
             using (concurrencyDetector.EnterCriticalSection())
             {
                 var rawSqlCommand = databaseFacade.Build(sql, parameters);
@@ -50,7 +50,7 @@ namespace Silkier.EFCore
             T result = default(T);
             IRelationalDatabaseFacadeDependencies facadeDependencies = GetFacadeDependencies(databaseFacade);
             IConcurrencyDetector concurrencyDetector = ((IDatabaseFacadeDependencies)facadeDependencies).ConcurrencyDetector;
-            IDiagnosticsLogger<DbLoggerCategory.Database.Command> commandLogger = ((IDatabaseFacadeDependencies)facadeDependencies).CommandLogger;
+           var  commandLogger = ( facadeDependencies).CommandLogger;
             using (concurrencyDetector.EnterCriticalSection())
             {
                 var rawSqlCommand = databaseFacade.Build(sql, parameters);
@@ -97,7 +97,7 @@ namespace Silkier.EFCore
             T result = default(T);
             IRelationalDatabaseFacadeDependencies facadeDependencies = GetFacadeDependencies(databaseFacade);
             IConcurrencyDetector concurrencyDetector = ((IDatabaseFacadeDependencies)facadeDependencies).ConcurrencyDetector;
-            IDiagnosticsLogger<DbLoggerCategory.Database.Command> commandLogger = ((IDatabaseFacadeDependencies)facadeDependencies).CommandLogger;
+            var  commandLogger = facadeDependencies.CommandLogger;
             using (concurrencyDetector.EnterCriticalSection())
             {
                 var rawSqlCommand = databaseFacade.Build(sql, parameters);
@@ -116,7 +116,7 @@ namespace Silkier.EFCore
         {
             IRelationalDatabaseFacadeDependencies facadeDependencies = GetFacadeDependencies(databaseFacade);
             IConcurrencyDetector concurrencyDetector = ((IDatabaseFacadeDependencies)facadeDependencies).ConcurrencyDetector;
-            IDiagnosticsLogger<DbLoggerCategory.Database.Command> commandLogger = ((IDatabaseFacadeDependencies)facadeDependencies).CommandLogger;
+            var  commandLogger =  facadeDependencies.CommandLogger;
             using (concurrencyDetector.EnterCriticalSection())
             {
                 var rawSqlCommand = databaseFacade.Build(sql, parameters);
@@ -127,7 +127,7 @@ namespace Silkier.EFCore
         {
             IRelationalDatabaseFacadeDependencies facadeDependencies = GetFacadeDependencies(databaseFacade);
             IConcurrencyDetector concurrencyDetector = ((IDatabaseFacadeDependencies)facadeDependencies).ConcurrencyDetector;
-            IDiagnosticsLogger<DbLoggerCategory.Database.Command> commandLogger = ((IDatabaseFacadeDependencies)facadeDependencies).CommandLogger;
+            var commandLogger = facadeDependencies.CommandLogger;
             using (concurrencyDetector.EnterCriticalSection())
             {
                 var rawSqlCommand = databaseFacade.Build(sql, parameters);

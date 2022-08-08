@@ -19,15 +19,15 @@ namespace Silkier.Extensions
         /// <param name="resource"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public static T ReqResp<T, I>(this RestClient client, string resource, I body)
+        public static T ReqResp<T, I>(this RestClient client, string resource, I body) where I : class
         {
-            return ReqResp<T, I>(client, resource, body, Method.POST, DataFormat.Json, null, null);
+            return ReqResp<T, I>(client, resource, body, Method.Post, DataFormat.Json, null, null);
         }
-        public static T ReqResp<T, I>(this RestClient client, string resource, I body, Method method = Method.GET, DataFormat dataFormat = DataFormat.Json
+        public static T ReqResp<T, I>(this RestClient client, string resource, I body, Method method = Method.Get, DataFormat dataFormat = DataFormat.Json
           , Action<int, string> __log = null
-          , List<HttpCookie> cookies = null)
+          , List<Cookie> cookies = null) where I : class
         {
-            return ReqResp<T>(client, resource, method, dataFormat, __log, cookies, req =>
+            return ReqResp<T>(client, resource, method,  __log, cookies, req =>
                 {
                     switch (dataFormat)
                     {
@@ -45,38 +45,37 @@ namespace Silkier.Extensions
                     return req;
                 });
         }
-        public static T ReqResp<T>(this RestClient client, string resource, Method method = Method.GET, DataFormat dataFormat = DataFormat.Json
+        public static T ReqResp<T>(this RestClient client, string resource, Method method = Method.Get
                 , Action<int, string> __log = null
-                , List<HttpCookie> cookies = null
+                , List<Cookie> cookies = null
                 , Func<RestRequest, RestRequest> func = null)
         {
-            var req = new RestRequest(resource, method, dataFormat);
+            var req = new RestRequest(resource, method);
             if (func != null)
             {
                 req = func.Invoke(req);
             }
-            return client.ReqResp<T>(req, __log, cookies);
+            return client.ReqResp<T>(req,DataFormat.Json, __log, cookies);
         }
         public static T ReqResp<T>(this RestClient client, string resource)
-            => client.ReqResp<T>(new RestRequest(resource, Method.GET, DataFormat.Json), null, null);
+            => client.ReqResp<T>(new RestRequest(resource, Method.Get),  DataFormat.Json, null, null);
 
-        public static T ReqResp<T>(this RestClient client, string resource, Method method = Method.GET, DataFormat dataFormat = DataFormat.Json)
-                    => client.ReqResp<T>(new RestRequest(resource, method, dataFormat), null, null);
+        public static T ReqResp<T>(this RestClient client, string resource, Method method = Method.Get, DataFormat dataFormat = DataFormat.Json)
+                    => client.ReqResp<T>(new RestRequest(resource, method), dataFormat, null, null);
 
-        public static T ReqResp<T>(this RestClient client, string resource, Method method = Method.GET, DataFormat dataFormat = DataFormat.Json, Action<int, string> __log = null, List<HttpCookie> cookies = null)
-                      => client.ReqResp<T>(new RestRequest(resource, method, dataFormat), __log, cookies);
+        public static T ReqResp<T>(this RestClient client, string resource, Method method = Method.Get, DataFormat dataFormat = DataFormat.Json, Action<int, string> __log = null, List<Cookie> cookies = null)
+                      => client.ReqResp<T>(new RestRequest(resource, method),dataFormat, __log, cookies);
 
-        public static T ReqResp<T>(this RestClient client, Uri resource, Method method = Method.GET, DataFormat dataFormat = DataFormat.Json, Action<int, string> __log = null, List<HttpCookie> cookies = null)
-                        => client.ReqResp<T>(new RestRequest(resource, method, dataFormat), __log, cookies);
+        public static T ReqResp<T>(this RestClient client, Uri resource, Method method = Method.Get, DataFormat dataFormat = DataFormat.Json, Action<int, string> __log = null, List<Cookie> cookies = null)
+                        => client.ReqResp<T>(new RestRequest(resource, method), dataFormat, __log, cookies);
 
-        public static T ReqResp<T>(this RestClient client, Uri resource, Method method = Method.GET, DataFormat dataFormat = DataFormat.Json, Func<RestRequest, RestRequest> func = null)
-             => client.ReqResp<T>(new RestRequest(resource, method, dataFormat), null, null, func);
+        public static T ReqResp<T>(this RestClient client, Uri resource, Method method = Method.Get, DataFormat dataFormat = DataFormat.Json, Func<RestRequest, RestRequest> func = null)
+             => client.ReqResp<T>(new RestRequest(resource, method),dataFormat , null, null, func);
 
-        public static T ReqResp<T>(this RestClient client, Uri resource, Method method = Method.GET, DataFormat dataFormat = DataFormat.Json, Action<int, string> __log = null, List<HttpCookie> cookies = null, Func<RestRequest, RestRequest> func = null)
-                    => client.ReqResp<T>(new RestRequest(resource, method, dataFormat), __log, cookies, func);
-        public static T ReqResp<T>(this RestClient client, RestRequest rest, Action<int, string> __log = null, List<HttpCookie> cookies = null)
-               => client.ReqResp<T>(rest, __log, cookies, null);
-        public static T ReqResp<T>(this RestClient client, RestRequest rest, Action<int, string> __log = null, List<HttpCookie> cookies = null, Func<RestRequest, RestRequest> func = null)
+        public static T ReqResp<T>(this RestClient client, Uri resource, Method method = Method.Get, DataFormat dataFormat = DataFormat.Json, Action<int, string> __log = null, List<Cookie> cookies = null, Func<RestRequest, RestRequest> func = null)
+                    => client.ReqResp<T>(new RestRequest(resource,method),dataFormat, __log, cookies, func);
+ 
+        public static T ReqResp<T>(this RestClient client, RestRequest rest, DataFormat dataFormat = DataFormat.Json, Action<int, string> __log = null, List<Cookie> cookies = null, Func<RestRequest, RestRequest> func = null)
         {
             T result = default;
             try
@@ -85,7 +84,7 @@ namespace Silkier.Extensions
                 {
                     cookies.ForEach(co =>
                     {
-                        rest.AddCookie(co.Name, co.Value);
+                        client.AddCookie(co.Name, co.Value,co.Port,co.Domain);
                     });
                 }
                 var response = client.Execute(func.Invoke(rest));
@@ -96,7 +95,7 @@ namespace Silkier.Extensions
                     if (cookies != null)
                     {
                         cookies.Clear();
-                        cookies.AddRange(response.Cookies.Select(s => s.HttpCookie));
+                        cookies.AddRange(response.Cookies.ToArray());
                     }
                 }
                 else

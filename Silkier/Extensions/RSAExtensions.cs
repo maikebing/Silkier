@@ -682,7 +682,7 @@ namespace Silkier.Extensions
         /// <returns></returns>
         public static byte[] ConvertToRgbHash(string data, string encoding = "UTF-8")
         {
-            using (MD5 md5 = new MD5CryptoServiceProvider())
+            using (MD5 md5 = MD5.Create())
             {
                 byte[] bytes_md5_in = Encoding.GetEncoding(encoding).GetBytes(data);
                 return md5.ComputeHash(bytes_md5_in);
@@ -702,7 +702,7 @@ namespace Silkier.Extensions
 
             RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
             rsa.FromPublicKeyJavaString(publicKey);
-            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            MD5 md5 = MD5.Create();
 
             byte[] Data = Encoding.GetEncoding(encoding).GetBytes(data);
             byte[] rgbSignature = Convert.FromBase64String(sign);
